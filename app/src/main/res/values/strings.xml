@@ -21,4 +21,7 @@
     <string name="title_activity_sound_wave">SoundWaveActivity</string>
     <string name="title_activity_light">LightActivity</string>
     <string name="title_activity_compass">CompassActivity</string>
+    <string name="title_activity_accelerometer">AccelerometerActivity</string>
+
+
 </resources>

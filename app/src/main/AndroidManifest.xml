@@ -2,7 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.lvable.mysensorbox" >
 
-
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
     <application
         android:name=".MyApplication"
@@ -34,6 +35,10 @@
         <activity
             android:name=".CompassActivity"
             android:label="@string/title_activity_compass" >
+        </activity>
+        <activity
+            android:name=".AccelerometerActivity"
+            android:label="@string/title_activity_accelerometer" >
         </activity>
     </application>
 

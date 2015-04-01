@@ -1,12 +1,14 @@
 package com.lvable.mysensorbox;
 
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -47,6 +49,7 @@ public class MainActivity extends ActionBarActivity implements CardAdapter.CardO
 
 
 
+
     }
 
     private void loadIconDatas() {
@@ -54,7 +57,7 @@ public class MainActivity extends ActionBarActivity implements CardAdapter.CardO
 
         mIconDatas.add(new IconData(R.string.leader_board,R.drawable.c1,
                 getResources().getColor(R.color.light_white),getResources().getColor(R.color.light_gray)));
-        mIconDatas.add(new IconData(R.string.chemistry,R.drawable.c2,
+        mIconDatas.add(new IconData(R.string.light_name,R.drawable.light_icon,
                 getResources().getColor(R.color.light_blue),getResources().getColor(R.color.dark_blue)));
         mIconDatas.add(new IconData(R.string.music,R.drawable.c3,
                 getResources().getColor(R.color.light_yellow),getResources().getColor(R.color.dark_yellow)));
@@ -92,11 +95,16 @@ public class MainActivity extends ActionBarActivity implements CardAdapter.CardO
                     intent = new Intent(MainActivity.this,CompassActivity.class);
                     startActivity(intent);
                     overridePendingTransition(0, 0);
-
                     break;
                 case 3:
+                    intent = new Intent(MainActivity.this,SoundWaveActivity.class);
+                    startActivity(intent);
+                    overridePendingTransition(0, 0);
                     break;
                 case 4:
+                    intent = new Intent(MainActivity.this,AccelerometerActivity.class);
+                    startActivity(intent);
+                    overridePendingTransition(0, 0);
                     break;
                 case 5:
                     break;

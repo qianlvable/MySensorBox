@@ -3,13 +3,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 tools:context=".MainActivity">
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/tool_bar"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:minHeight="?attr/actionBarSize"
-        android:background="#4BA64E"
-        />
+ <include layout="@layout/toolbar_layout" android:id="@+id/tool_bar"/>
     <io.codetail.widget.RevealFrameLayout
         android:layout_below="@id/tool_bar"
         android:layout_width="match_parent"
