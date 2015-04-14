@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Label Game</string>
+    <string name="app_name">My Sensor Box</string>
     
     <string name="distance_name">Distance Sensor</string>
     <string name="compass_name">Compass</string>
@@ -22,6 +22,7 @@
     <string name="title_activity_light">LightActivity</string>
     <string name="title_activity_compass">CompassActivity</string>
     <string name="title_activity_accelerometer">AccelerometerActivity</string>
+    <string name="title_activity_fft">FFTActivity</string>
 
 
 </resources>

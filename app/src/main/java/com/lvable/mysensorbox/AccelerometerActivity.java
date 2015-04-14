@@ -34,13 +34,15 @@ public class AccelerometerActivity extends ActionBarActivity implements SensorEv
     private float mAccelY = 0;
     private float mAccelZ = 0;
     private long lastUpdateTime;
-
+    private BallSurfaceView renderView;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_accelerometer);
+        renderView = new BallSurfaceView(this);
+
+        setContentView(renderView);
         mSensorManager = MyApplication.getInstance().getSensorManager();
         mAccelSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
@@ -51,12 +53,14 @@ public class AccelerometerActivity extends ActionBarActivity implements SensorEv
     @Override
     protected void onResume() {
         super.onResume();
+        renderView.resume();
         mSensorManager.registerListener(this,mAccelSensor,SensorManager.SENSOR_DELAY_NORMAL);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        renderView.pause();
         mSensorManager.unregisterListener(this);
     }
 
@@ -67,11 +71,8 @@ public class AccelerometerActivity extends ActionBarActivity implements SensorEv
             mAccelX = sensorEvent.values[0];
             mAccelY = sensorEvent.values[1];
             mAccelZ = sensorEvent.values[2];
-
-
-
-
             lastUpdateTime = curTime;
+            Log.d("accel",mAccelX +","+mAccelY+","+mAccelZ);
         }
 
 

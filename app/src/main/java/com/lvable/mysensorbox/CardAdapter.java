@@ -1,5 +1,6 @@
 package com.lvable.mysensorbox;
 
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,6 +36,7 @@ public class CardAdapter extends RecyclerView.Adapter<MyViewHolder> {
         final int bgColor = mIconDataSet.get(i).getBgColor();
         myViewHolder.mTitleTextView.setText(mIconDataSet.get(i).getTitleStringId());
         myViewHolder.mImageView.setImageResource(mIconDataSet.get(i).getImgID());
+        myViewHolder.mImageView.setBackgroundColor(Color.TRANSPARENT);
         myViewHolder.mCardLayout.setBackgroundColor(mIconDataSet.get(i).getBgColor());
         myViewHolder.mTitleTextView.setBackgroundColor(mIconDataSet.get(i).getTitleBarColor());
         myViewHolder.mCardLayout.setOnClickListener(new View.OnClickListener() {

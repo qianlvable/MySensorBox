@@ -34,6 +34,7 @@ public class MainActivity extends ActionBarActivity implements CardAdapter.CardO
         setContentView(R.layout.activity_main);
         loadIconDatas();
 
+        getWindow().setBackgroundDrawable(null);
 
         mToolbar = (Toolbar) findViewById(R.id.tool_bar);
         setSupportActionBar(mToolbar);
@@ -47,23 +48,20 @@ public class MainActivity extends ActionBarActivity implements CardAdapter.CardO
 
         mRevealView = findViewById(R.id.reveal_view);
 
-
-
-
     }
 
     private void loadIconDatas() {
         mIconDatas = new ArrayList<IconData>();
 
-        mIconDatas.add(new IconData(R.string.leader_board,R.drawable.c1,
+        mIconDatas.add(new IconData(R.string.distance_name,R.drawable.c1,
                 getResources().getColor(R.color.light_white),getResources().getColor(R.color.light_gray)));
         mIconDatas.add(new IconData(R.string.light_name,R.drawable.light_icon,
                 getResources().getColor(R.color.light_blue),getResources().getColor(R.color.dark_blue)));
-        mIconDatas.add(new IconData(R.string.music,R.drawable.c3,
+        mIconDatas.add(new IconData(R.string.sound_name,R.drawable.c3,
                 getResources().getColor(R.color.light_yellow),getResources().getColor(R.color.dark_yellow)));
-        mIconDatas.add(new IconData(R.string.bio,R.drawable.c4,
+        mIconDatas.add(new IconData(R.string.compass_name,R.drawable.c4,
                 getResources().getColor(R.color.light_orange),getResources().getColor(R.color.dark_orange)));
-        mIconDatas.add(new IconData(R.string.bio,R.drawable.c5,
+        mIconDatas.add(new IconData(R.string.gravity_name,R.drawable.c5,
                 getResources().getColor(R.color.light_brown),getResources().getColor(R.color.dark_brown)));
         mIconDatas.add(new IconData(R.string.add,R.drawable.c6,
                 getResources().getColor(R.color.green_yellow),getResources().getColor(R.color.dark_green_yellow)));
@@ -92,12 +90,13 @@ public class MainActivity extends ActionBarActivity implements CardAdapter.CardO
 
                     break;
                 case 2:
-                    intent = new Intent(MainActivity.this,CompassActivity.class);
+                    intent = new Intent(MainActivity.this,SoundWaveActivity.class);
                     startActivity(intent);
                     overridePendingTransition(0, 0);
+
                     break;
                 case 3:
-                    intent = new Intent(MainActivity.this,SoundWaveActivity.class);
+                    intent = new Intent(MainActivity.this,CompassActivity.class);
                     startActivity(intent);
                     overridePendingTransition(0, 0);
                     break;

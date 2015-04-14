@@ -1,32 +1,73 @@
 package com.lvable.mysensorbox;
 
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-
-import com.lvable.mysensorbox.sensor.framework.util.ProximitySensorProvider;
+import android.util.Log;
 
 
-public class DistanceActivity extends ActionBarActivity {
-    private ProximitySensorProvider sensor;
+public class DistanceActivity extends ActionBarActivity implements SensorEventListener{
+    private SensorManager mSensorManager;
+    private Sensor mProximity;
+    private float mCurDistance;
+    private TreeSurfaceView mRenderView;
+    private float maxRange;
+    private float preDistance;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_distance);
+        mRenderView = new TreeSurfaceView(this);
+        setContentView(mRenderView);
 
-        sensor = new ProximitySensorProvider();
+        mSensorManager = MyApplication.getInstance().getSensorManager();
+        mProximity = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
+
+        maxRange = mProximity.getMaximumRange();
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        sensor.startSensor();
+        mRenderView.resume();
+        mSensorManager.registerListener(this, mProximity, SensorManager.SENSOR_DELAY_FASTEST);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        sensor.stopSensor();
+        mRenderView.pause();
+        mSensorManager.unregisterListener(this);
+    }
+
+    @Override
+    public void onSensorChanged(SensorEvent sensorEvent) {
+        if (TreeSurfaceView.isAnimationFinish) {
+            TreeSurfaceView.C2Fcount = 0;
+            TreeSurfaceView.F2Ccount = 20;
+            mCurDistance = sensorEvent.values[0];
+            Log.d("distance",mCurDistance + "");
+            if (preDistance >= maxRange) {
+                if ((mCurDistance - preDistance) < 0)
+                    mRenderView.setState(TreeSurfaceView.STATE.FAR_CLOESD);
+                else
+                    mRenderView.setState(TreeSurfaceView.STATE.FAR);
+            } else {
+                if ((mCurDistance - preDistance) > 0)
+                    mRenderView.setState(TreeSurfaceView.STATE.CLOSED_FAR);
+                else
+                    mRenderView.setState(TreeSurfaceView.STATE.CLOSED);
+            }
+            preDistance = mCurDistance;
+        }
+    }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int i) {
+
+
     }
 }
