@@ -1,23 +1,30 @@
 package com.lvable.mysensorbox;
 
+import android.util.Log;
+
 /**
  * Created by Jiaqi Ning on 9/4/2015.
  */
 public class Attractor {
     float mass;
     private float G;
+    PVector acceleration;
+    PVector location;
+    PVector velocity;
 
     public void setLocation(float x,float y) {
         location.x = x;
         location.y = y;
     }
 
-    PVector location;
+
 
     public Attractor(int x,int y){
         location = new PVector(x,y);
-        mass = 25;
-        G = 8f;
+        velocity = new PVector(0, 0);
+        acceleration = new PVector(0, 0);
+        mass = 55;
+        G = 4f;
     }
 
     PVector attract(Mover m) {
@@ -27,6 +34,7 @@ public class Attractor {
         force.normalize();                                  // Normalize vector (distance doesn't matter here, we just want this vector for direction)
         float strength = (G * mass * m.mass) / (d * d);      // Calculate gravitional force magnitude
         force.mult(strength);                                  // Get force vector --> magnitude * direction
+
         return force;
     }
 
@@ -37,5 +45,17 @@ public class Attractor {
             return max;
         else
             return val;
+    }
+
+    void applyForce(PVector force){
+        acceleration = force;
+        Log.d("wtf",acceleration.toString());
+    }
+
+    void update(){
+        velocity.add(acceleration);
+        location.add(velocity);
+        Log.d("speed",velocity.toString());
+        acceleration.mult(0);
     }
 }

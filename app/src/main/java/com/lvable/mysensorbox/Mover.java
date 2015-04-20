@@ -28,12 +28,12 @@ public class Mover {
         PVector f = force.get();
         f.div(mass);
         acceleration.add(f);
+
     }
 
     void update(){
         velocity.add(acceleration);
         location.add(velocity);
-
 
         acceleration.mult(0);
     }

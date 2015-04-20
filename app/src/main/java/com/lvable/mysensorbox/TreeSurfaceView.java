@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
@@ -28,7 +27,9 @@ public class TreeSurfaceView extends SurfaceView implements Runnable {
 
     private STATE mState;
 
-    private ArrayList<Integer> mDrawingData;
+    private ArrayList<Float> mClosedTreeData;
+    private ArrayList<Float> mOpenTreeData;
+    private ArrayList<Float> mAnimateTreeData;
 
 
     public TreeSurfaceView(Context context) {
@@ -45,7 +46,9 @@ public class TreeSurfaceView extends SurfaceView implements Runnable {
         mPaint.setAntiAlias(true);
         mState = STATE.CLOSED_FAR;
 
-        mDrawingData = new ArrayList<Integer>();
+        mClosedTreeData = new ArrayList<Float>();
+        mOpenTreeData = new ArrayList<Float>();
+        mAnimateTreeData = new ArrayList<Float>();
     }
 
 
@@ -89,12 +92,12 @@ public class TreeSurfaceView extends SurfaceView implements Runnable {
             branch(canvas, (float) (width * 0.3));
 
 
-
             mHolder.unlockCanvasAndPost(canvas);
         }
     }
 
     void branch(Canvas canvas,float len){
+        mClosedTreeData.add(len);
 
         canvas.drawLine(0, 0, 0, -len, mPaint);
         canvas.translate(0, -len);

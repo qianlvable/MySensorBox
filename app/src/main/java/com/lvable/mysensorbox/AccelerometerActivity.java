@@ -1,6 +1,7 @@
 package com.lvable.mysensorbox;
 
 import android.content.Context;
+import android.graphics.Paint;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -35,6 +36,12 @@ public class AccelerometerActivity extends ActionBarActivity implements SensorEv
     private float mAccelZ = 0;
     private long lastUpdateTime;
     private BallSurfaceView renderView;
+    private AccelerateChangeListener mAccelerateChangeListener;
+
+
+    public interface AccelerateChangeListener{
+        void dataChange(float dx,float dy,float dz);
+    }
 
 
     @Override
@@ -46,6 +53,7 @@ public class AccelerometerActivity extends ActionBarActivity implements SensorEv
         mSensorManager = MyApplication.getInstance().getSensorManager();
         mAccelSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
+        mAccelerateChangeListener = renderView.getListener();
 
 
     }
@@ -67,12 +75,15 @@ public class AccelerometerActivity extends ActionBarActivity implements SensorEv
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
         long curTime = System.currentTimeMillis();
-        if ((curTime - lastUpdateTime)>20) {
+        if ((curTime - lastUpdateTime)>100) {
             mAccelX = sensorEvent.values[0];
             mAccelY = sensorEvent.values[1];
             mAccelZ = sensorEvent.values[2];
             lastUpdateTime = curTime;
-            Log.d("accel",mAccelX +","+mAccelY+","+mAccelZ);
+            Log.d("accel", mAccelX + "," + mAccelY + "," + mAccelZ);
+            if (Math.abs(mAccelX) < 0.25 && Math.abs(mAccelY) < 0.25)
+                return;
+            mAccelerateChangeListener.dataChange(mAccelX,mAccelY,mAccelZ);
         }
 
 
