@@ -23,13 +23,13 @@ public class TreeSurfaceView extends SurfaceView implements Runnable {
 
     enum STATE {CLOSED_FAR,FAR_CLOESD,CLOSED,FAR};
     static boolean isAnimationFinish = true;
-    private float strokeWidth = 2.2f;
+    private float strokeWidth = 2.6f;
 
     private STATE mState;
+    private STATE mPreState;
 
-    private ArrayList<Float> mClosedTreeData;
-    private ArrayList<Float> mOpenTreeData;
-    private ArrayList<Float> mAnimateTreeData;
+
+    boolean isHasData = false;
 
 
     public TreeSurfaceView(Context context) {
@@ -40,15 +40,13 @@ public class TreeSurfaceView extends SurfaceView implements Runnable {
     private void init() {
         mHolder = getHolder();
         mPaint = new Paint();
-        mPaint.setColor(Color.BLACK);
-
+        mPaint.setColor(Color.WHITE);
         mPaint.setStrokeWidth(strokeWidth);
         mPaint.setAntiAlias(true);
-        mState = STATE.CLOSED_FAR;
 
-        mClosedTreeData = new ArrayList<Float>();
-        mOpenTreeData = new ArrayList<Float>();
-        mAnimateTreeData = new ArrayList<Float>();
+        mState = STATE.CLOSED_FAR;
+        mPreState = STATE.CLOSED;
+
     }
 
 
@@ -57,47 +55,53 @@ public class TreeSurfaceView extends SurfaceView implements Runnable {
         while (running){
             if (!mHolder.getSurface().isValid())
                 continue;
-            Canvas canvas = mHolder.lockCanvas();
-            int width = canvas.getWidth();
-            int height = canvas.getHeight();
-            switch (mState){
-                case CLOSED:
-                    degrees = 10;
-                    break;
-                case FAR:
-                    degrees = 70;
-                    break;
-                case CLOSED_FAR:
-                    isAnimationFinish = false;
-                    if (C2Fcount <= 20) {
-                        degrees = mapValue(C2Fcount, 0, 20, 0, 90);
-                        C2Fcount++;
-                    }else {
-                        isAnimationFinish = true;
-                    }
+            if (mState != mPreState || !isAnimationFinish) {
+                Canvas canvas = mHolder.lockCanvas();
+                int width = canvas.getWidth();
+                int height = canvas.getHeight();
 
-                    break;
-                case FAR_CLOESD:
-                    isAnimationFinish = false;
-                    if (F2Ccount >= 0) {
-                        degrees = mapValue(F2Ccount, 0, 20, 0, 90);
-                        F2Ccount--;
-                    }else {
-                        isAnimationFinish = true;
-                    }
-                    break;
+                switch (mState) {
+                    case CLOSED:
+                        degrees = 10;
+                        mPreState = STATE.CLOSED;
+                        break;
+                    case FAR:
+                        degrees = 70;
+                        mPreState = STATE.FAR;
+                        break;
+                    case CLOSED_FAR:
+                        isAnimationFinish = false;
+                        if (C2Fcount <= 20) {
+                            degrees = mapValue(C2Fcount, 0, 20, 0, 90);
+                            C2Fcount++;
+                        } else {
+                            isAnimationFinish = true;
+                        }
+                        mPreState = STATE.CLOSED_FAR;
+                        break;
+                    case FAR_CLOESD:
+                        isAnimationFinish = false;
+                        if (F2Ccount >= 0) {
+                            degrees = mapValue(F2Ccount, 0, 20, 0, 90);
+                            F2Ccount--;
+                        } else {
+                            isAnimationFinish = true;
+                        }
+                        mPreState = STATE.FAR_CLOESD;
+                        break;
+                }
+
+                canvas.drawRGB(102, 187, 106);
+                canvas.translate(width / 2, height);
+                branch(canvas, (float) (width * 0.3));
+                isHasData = true;
+
+                mHolder.unlockCanvasAndPost(canvas);
             }
-            canvas.drawRGB(255, 255, 255);
-            canvas.translate(width / 2, height);
-            branch(canvas, (float) (width * 0.3));
-
-
-            mHolder.unlockCanvasAndPost(canvas);
         }
     }
 
     void branch(Canvas canvas,float len){
-        mClosedTreeData.add(len);
 
         canvas.drawLine(0, 0, 0, -len, mPaint);
         canvas.translate(0, -len);
@@ -115,7 +119,6 @@ public class TreeSurfaceView extends SurfaceView implements Runnable {
             canvas.save();
             canvas.rotate(-degrees);
             branch(canvas, len);
-
             canvas.restore();
         }
 

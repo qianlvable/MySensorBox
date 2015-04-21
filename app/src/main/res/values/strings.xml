@@ -23,6 +23,7 @@
     <string name="title_activity_compass">CompassActivity</string>
     <string name="title_activity_accelerometer">AccelerometerActivity</string>
     <string name="title_activity_fft">FFTActivity</string>
+    <string name="title_activity_magnetic">MagneticActivity</string>
 
 
 </resources>

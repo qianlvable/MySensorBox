@@ -12,4 +12,6 @@
     <color name="dark_brown">#875146</color>
     <color name="green_yellow">#D4DF75</color>
     <color name="dark_green_yellow">#D1D844</color>
+    <color name="light_purple">#7890BB</color>
+    <color name="dark_purple">#314FA0</color>
 </resources>

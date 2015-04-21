@@ -5,7 +5,7 @@
                 android:background="#E25050"
               >
 
-<include layout="@layout/toolbar_layout" android:id="@+id/tool_bar_2"/>
+<include layout="@layout/toolbar_layout" android:id="@+id/toolbar_sound"/>
 <com.lvable.mysensorbox.audio.process.VisualizerView
     android:id="@+id/visualizerView"
     android:layout_width="match_parent"

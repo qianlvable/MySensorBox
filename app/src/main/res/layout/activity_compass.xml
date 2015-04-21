@@ -35,7 +35,8 @@
         android:textSize="25sp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/compass"/>
+        android:layout_below="@id/compass"
+        android:id="@+id/tv_amz"/>
 
 
 

@@ -6,6 +6,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,7 +20,7 @@ public class LightActivity extends ActionBarActivity implements SensorEventListe
     private Sensor mLightSensor;
     private float mLumino;
     private float maxRange;
-    private float levelWidth;
+    private Toolbar mToolbar;
     private ImageView mLightImageView;
     private int[] imageResId = {R.drawable.light1,R.drawable.light2,
             R.drawable.light3,R.drawable.light4,R.drawable.light4};
@@ -33,10 +34,11 @@ public class LightActivity extends ActionBarActivity implements SensorEventListe
 
         // TODO: add check sensor available
         maxRange = mLightSensor.getMaximumRange() / 5;
-        levelWidth = maxRange / 7;
-
 
         mLightImageView = (ImageView)findViewById(R.id.iv_light);
+        mToolbar = (Toolbar)findViewById(R.id.toolbar_light);
+        mToolbar.setLogo(R.drawable.logo);
+        mToolbar.setTitle("Light sensor");
     }
 
     @Override
@@ -54,19 +56,7 @@ public class LightActivity extends ActionBarActivity implements SensorEventListe
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
         mLumino = sensorEvent.values[0];
-/*
-        if( mLumino < levelWidth){
-            mLightImageView.setImageResource(imageResId[0]);
-        }else if ( levelWidth <= mLumino && mLumino < 2* levelWidth){
-            mLightImageView.setImageResource(imageResId[1]);
-        }else if ( 2*levelWidth <= mLumino && mLumino < 3* levelWidth){
-            mLightImageView.setImageResource(imageResId[2]);
-        }else if ( 3*levelWidth <= mLumino && mLumino < 4* levelWidth){
-            mLightImageView.setImageResource(imageResId[3]);
-        }else{
-            mLightImageView.setImageResource(imageResId[4]);
-        }
-        */
+
         if( mLumino < 50){
             mLightImageView.setImageResource(imageResId[0]);
         }else if ( 50 <= mLumino && mLumino < 90){

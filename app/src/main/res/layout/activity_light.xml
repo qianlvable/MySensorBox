@@ -4,9 +4,9 @@
                 android:layout_height="match_parent"
                 android:background="#293F4E"
                 tools:context="com.lvable.mysensorbox.LightActivity">
-    <include layout="@layout/toolbar_layout" android:id="@+id/tool_bar_1"/>
+    <include layout="@layout/toolbar_layout" android:id="@+id/toolbar_light"/>
     <ImageView
-        android:layout_below="@+id/tool_bar_1"
+        android:layout_below="@+id/toolbar_light"
         android:layout_marginTop="40dp"
         android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"

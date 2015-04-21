@@ -12,6 +12,7 @@ import android.os.AsyncTask;
 import android.os.Environment;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -31,11 +32,15 @@ public class SoundWaveActivity extends ActionBarActivity {
     private static final String AUDIO_FILE_NAME = "record_test.raw";
     private String fileName;
     private TextView dbTextView;
+    private Toolbar mToolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sound_wave);
         visualizerView = (VisualizerView) findViewById(R.id.visualizerView);
+        mToolbar = (Toolbar)findViewById(R.id.toolbar_sound);
+        mToolbar.setLogo(R.drawable.logo);
+        mToolbar.setTitle("Sound wave sensor");
         dbTextView = (TextView)findViewById(R.id.db_text);
         setupVisualizer();
         fileName = getFileName();

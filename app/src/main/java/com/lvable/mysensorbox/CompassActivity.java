@@ -6,6 +6,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,6 +20,7 @@ import com.lvable.mysensorbox.sensor.framework.util.CompassProvider;
 
 public class CompassActivity extends ActionBarActivity implements SensorEventListener{
     private ImageView mPointer;
+    private TextView mDataTextView;
     private SensorManager mSensorManager;
     private Sensor mAccelerometer;
     private Sensor mMagnetometer;
@@ -27,6 +29,7 @@ public class CompassActivity extends ActionBarActivity implements SensorEventLis
     private float[] mR = new float[9];
     private float[] mOrientation = new float[3];
     private float mCurrentDegree = 0f;
+    private Toolbar mToolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +39,12 @@ public class CompassActivity extends ActionBarActivity implements SensorEventLis
         mAccelerometer = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         mMagnetometer = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
         mPointer = (ImageView) findViewById(R.id.compass_img);
+        mDataTextView = (TextView)findViewById(R.id.tv_amz);
+        mToolbar = (Toolbar)findViewById(R.id.toolbar_compass);
+        int toolbarColor = 0xff314FA0;
+        mToolbar.setBackgroundColor(toolbarColor);
+        mToolbar.setTitle("Compass");
+        mToolbar.setLogo(R.drawable.logo);
     }
 
     protected void onResume() {
@@ -71,11 +80,11 @@ public class CompassActivity extends ActionBarActivity implements SensorEventLis
                     0.5f);
 
             ra.setDuration(250);
-
             ra.setFillAfter(true);
-
             mPointer.startAnimation(ra);
+
             mCurrentDegree = -azimuthInDegress;
+            mDataTextView.setText(String.format("Azimuth : %.2f",azimuthInDegress));
         }
     }
 

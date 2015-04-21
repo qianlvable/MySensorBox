@@ -44,6 +44,10 @@
             android:name=".FFTActivity"
             android:label="@string/title_activity_fft" >
         </activity>
+        <activity
+            android:name=".MagneticActivity"
+            android:label="@string/title_activity_magnetic" >
+        </activity>
     </application>
 
 </manifest>
