@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:padding="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+    <android.support.v7.widget.GridLayout
+        android:id="@+id/sensor_info_grid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:useDefaultMargins="true"
+        app:alignmentMode="alignBounds"
+        app:columnOrderPreserved="false"
+        app:columnCount="4"
+        >
+        <TextView
+            android:text="Infomation"
+            android:textSize="28sp"
+            app:layout_columnSpan="4"
+            app:layout_gravity="left"
+            />
+
+
+        <TextView
+            android:text="Name :"
+            app:layout_gravity="right"
+            />
+
+        <TextView
+            android:text="unknown sensor"
+            android:id="@+id/sensor_name"/>
+
+        <TextView
+            android:text="Vendor :"
+
+            app:layout_column="0"
+            app:layout_gravity="right"
+            />
+
+        <TextView
+            android:text="unknown vendor"
+            android:id="@+id/sensor_vendor"/>
+        <TextView
+            android:text="Power :"
+
+            app:layout_column="0"
+            app:layout_gravity="right"
+            />
+
+        <TextView
+            android:text="unknown power rate"
+            android:id="@+id/sensor_power"/>
+
+        <TextView
+            android:text="Max Range :"
+
+            app:layout_column="0"
+            app:layout_gravity="right"
+            />
+
+        <TextView
+            android:text="unknown range"
+            android:id="@+id/sensor_range"/>
+
+        <TextView
+
+            android:text="More"
+            android:textSize="24sp"
+            app:layout_columnSpan="4"
+            app:layout_gravity="left"
+            />
+    </android.support.v7.widget.GridLayout>
+    <TextView
+        android:id="@+id/extra_content"
+        android:layout_below="@id/sensor_info_grid"
+        android:padding="5dp"
+        android:textSize="16sp"
+        android:layout_marginTop="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore "/>
+</RelativeLayout>

@@ -1,6 +1,8 @@
 package com.lvable.mysensorbox;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.media.AudioFormat;
@@ -16,6 +18,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.lvable.mysensorbox.audio.process.AudioRecordingHandler;
@@ -33,6 +36,8 @@ public class SoundWaveActivity extends ActionBarActivity {
     private String fileName;
     private TextView dbTextView;
     private Toolbar mToolbar;
+    private ImageButton mInfoBtn;
+    private AlertDialog mDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,11 +47,27 @@ public class SoundWaveActivity extends ActionBarActivity {
         mToolbar.setLogo(R.drawable.logo);
         mToolbar.setTitle("Sound wave sensor");
         dbTextView = (TextView)findViewById(R.id.db_text);
+        mInfoBtn = (ImageButton)findViewById(R.id.info_btn_sound);
         setupVisualizer();
         fileName = getFileName();
         startRecording();
 
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setPositiveButton("Got it!", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+            }
+        });
+        mDialog = builder.create();
+        mDialog.setTitle("Behind the scene");
+        mDialog.setMessage("FFT algorithm");
 
+        mInfoBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mDialog.show();
+            }
+        });
     }
 
     public static String getFileName() {

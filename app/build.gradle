@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.lvable.mysensorbox"
-        minSdkVersion 10
+        minSdkVersion 14
         targetSdkVersion 21
         versionCode 1
         versionName "1.0"
@@ -28,5 +28,8 @@ dependencies {
     compile project(':circualreveal')
     compile files('libs/simplesound-0.1.jar')
     compile files('libs/mpandroidchartlibrary-2-0-9.jar')
-    compile 'me.drakeet.materialdialog:library:1.2.2'
+
+    compile 'com.android.support:appcompat-v7:+'
+    compile 'com.android.support:gridlayout-v7:+'
+
 }

@@ -1,5 +1,6 @@
 package com.lvable.mysensorbox;
 
+import android.app.AlertDialog;
 import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -11,6 +12,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.HorizontalBarChart;
@@ -38,6 +41,8 @@ public class MagneticActivity extends ActionBarActivity implements SensorEventLi
     private int mMaxRange = 150;
     private TextView mMagValTextView;
     private MyValueFormatter mValueFormatter;
+    private AlertDialog mDialog;
+    private ImageButton mInfoBtn;
      @Override
     protected void onCreate(Bundle savedInstanceState) {
          super.onCreate(savedInstanceState);
@@ -52,6 +57,15 @@ public class MagneticActivity extends ActionBarActivity implements SensorEventLi
          mToolbar.setTitle("Magnetic Field");
 
          setupCharUI();
+
+         mDialog = OtherUtils.getInfoDialog(this,mMagSensor);
+         mInfoBtn = (ImageButton)findViewById(R.id.info_btn_magnet);
+         mInfoBtn.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View view) {
+                 mDialog.show();
+             }
+         });
      }
 
     private void setupCharUI() {
@@ -136,20 +150,8 @@ public class MagneticActivity extends ActionBarActivity implements SensorEventLi
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_magnetic, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-
-        return super.onOptionsItemSelected(item);
+        getMenuInflater().inflate(R.menu.menu_magnetic,menu);
+        return super.onCreateOptionsMenu(menu);
     }
 
     private class MyValueFormatter implements ValueFormatter {

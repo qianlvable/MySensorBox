@@ -1,5 +1,6 @@
 package com.lvable.mysensorbox;
 
+import android.app.AlertDialog;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -12,18 +13,19 @@ import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 
 
-public class DistanceActivity extends ActionBarActivity implements SensorEventListener{
+public class DistanceActivity extends ActionBarActivity implements SensorEventListener,SurfaceViewInfoBtnClickListener{
     private SensorManager mSensorManager;
-    private Sensor mProximity;
+    private Sensor mProximitySensor;
     private float mCurDistance;
     private TreeSurfaceView mRenderView;
     private Toolbar mToolbar;
     private float maxRange;
     private float preDistance;
+    private AlertDialog mDialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mRenderView = new TreeSurfaceView(this);
+        mRenderView = new TreeSurfaceView(this,this);
         setContentView(R.layout.activity_distance);
 
         mToolbar = (Toolbar)findViewById(R.id.toolbar_distance);
@@ -37,17 +39,17 @@ public class DistanceActivity extends ActionBarActivity implements SensorEventLi
         layout.addView(mRenderView, params);
 
         mSensorManager = MyApplication.getInstance().getSensorManager();
-        mProximity = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
+        mProximitySensor = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
 
-        maxRange = mProximity.getMaximumRange();
-
+        maxRange = mProximitySensor.getMaximumRange();
+        mDialog = OtherUtils.getInfoDialog(this, mProximitySensor);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         mRenderView.resume();
-        mSensorManager.registerListener(this, mProximity, SensorManager.SENSOR_DELAY_FASTEST);
+        mSensorManager.registerListener(this, mProximitySensor, SensorManager.SENSOR_DELAY_FASTEST);
     }
 
     @Override
@@ -83,5 +85,10 @@ public class DistanceActivity extends ActionBarActivity implements SensorEventLi
     public void onAccuracyChanged(Sensor sensor, int i) {
 
 
+    }
+
+    @Override
+    public void onInfoBtnClick() {
+        mDialog.show();
     }
 }

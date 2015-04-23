@@ -9,9 +9,6 @@ import android.graphics.Paint;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.widget.Toast;
-
-import java.util.ArrayList;
 
 /**
  * Created by Jiaqi Ning on 13/4/2015.
@@ -37,12 +34,13 @@ public class TreeSurfaceView extends SurfaceView implements Runnable {
     private int width = 0;
     private int height = 0;
 
-
     boolean isHasData = false;
 
+    private SurfaceViewInfoBtnClickListener mOnInfoClickListener;
 
-    public TreeSurfaceView(Context context) {
+    public TreeSurfaceView(Context context,SurfaceViewInfoBtnClickListener listener) {
         super(context);
+        mOnInfoClickListener = listener;
         init();
     }
 
@@ -137,7 +135,7 @@ public class TreeSurfaceView extends SurfaceView implements Runnable {
             float bitmapTop = height*0.05f;
             float bitmapLow = bitmapTop + infoBtn.getHeight();
             if ( x > bitmapLX && x < bitmapRX && y > bitmapTop && y < bitmapLow){
-                Toast.makeText(getContext(),"AHa",Toast.LENGTH_SHORT).show();
+                mOnInfoClickListener.onInfoBtnClick();
             }
         }
         return true;

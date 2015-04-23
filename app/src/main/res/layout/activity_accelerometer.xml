@@ -1,9 +1,16 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
-                android:id="@+id/accel_layout"
+
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 tools:context="com.lvable.mysensorbox.AccelerometerActivity">
     <include layout="@layout/toolbar_layout" android:id="@+id/toolbar_accel"/>
 
+    <FrameLayout
+        android:id="@+id/accel_layout"
+        android:layout_below="@id/toolbar_accel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+    </FrameLayout>
 </RelativeLayout>

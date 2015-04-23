@@ -6,22 +6,34 @@
               >
 
 <include layout="@layout/toolbar_layout" android:id="@+id/toolbar_sound"/>
-<com.lvable.mysensorbox.audio.process.VisualizerView
-    android:id="@+id/visualizerView"
-    android:layout_width="match_parent"
-    android:layout_height="250dp"
-    android:layout_alignParentTop="true"
-    android:layout_alignParentLeft="true"
-    android:layout_alignParentStart="true"
-    android:layout_marginTop="53dp"/>
-
+    <FrameLayout
+        android:layout_marginTop="25dp"
+        android:id="@+id/visualizer_layout"
+        android:layout_below="@id/toolbar_sound"
+        android:layout_width="match_parent"
+        android:layout_height="250dp">
+    <com.lvable.mysensorbox.audio.process.VisualizerView
+        android:id="@+id/visualizerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        />
+        <ImageButton
+            android:id="@+id/info_btn_sound"
+            android:layout_marginRight="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/info_icon2"
+            android:background="@null"
+            android:layout_gravity="right"/>
+    </FrameLayout>
     <TextView
         android:id="@+id/db_text"
         android:layout_marginTop="25dp"
-        android:layout_below="@id/visualizerView"
+        android:layout_below="@id/visualizer_layout"
         android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="30sp"
+        android:textSize="35sp"
         android:text="63 dp"/>
+
 </RelativeLayout>

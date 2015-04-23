@@ -6,11 +6,9 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.widget.Toast;
 
 import java.util.Random;
 
@@ -33,11 +31,13 @@ public class BallSurfaceView extends SurfaceView implements Runnable,Acceleromet
     private Bitmap infoBtn;
     private int width = 0;
     private int height = 0;
+    private SurfaceViewInfoBtnClickListener mOnInfoClickListener;
 
-    public BallSurfaceView(Context context) {
+
+    public BallSurfaceView(Context context,SurfaceViewInfoBtnClickListener listener) {
         super(context);
-
         init();
+        mOnInfoClickListener = listener;
     }
 
     private void init() {
@@ -155,7 +155,7 @@ public class BallSurfaceView extends SurfaceView implements Runnable,Acceleromet
             float bitmapTop = height*0.05f;
             float bitmapLow = bitmapTop + infoBtn.getHeight();
             if ( x > bitmapLX && x < bitmapRX && y > bitmapTop && y < bitmapLow){
-                Toast.makeText(getContext(), "AHa", Toast.LENGTH_SHORT).show();
+                mOnInfoClickListener.onInfoBtnClick();
             }
         }
         return true;

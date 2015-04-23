@@ -1,5 +1,6 @@
 package com.lvable.mysensorbox;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Paint;
 import android.hardware.Sensor;
@@ -16,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -31,7 +33,8 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 
 
-public class AccelerometerActivity extends ActionBarActivity implements SensorEventListener{
+public class AccelerometerActivity extends ActionBarActivity implements SensorEventListener
+        ,SurfaceViewInfoBtnClickListener{
     private SensorManager mSensorManager;
     private Sensor mAccelSensor;
     private float mAccelX = 0;
@@ -41,6 +44,8 @@ public class AccelerometerActivity extends ActionBarActivity implements SensorEv
     private BallSurfaceView renderView;
     private Toolbar mToolbar;
     private AccelerateChangeListener mAccelerateChangeListener;
+    private AlertDialog mDialog;
+
 
 
     public interface AccelerateChangeListener{
@@ -52,23 +57,23 @@ public class AccelerometerActivity extends ActionBarActivity implements SensorEv
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_accelerometer);
-        renderView = new BallSurfaceView(this);
+        renderView = new BallSurfaceView(this,this);
         mToolbar = (Toolbar)findViewById(R.id.toolbar_accel);
         mToolbar.setLogo(R.drawable.logo);
         mToolbar.setTitle("Acceleration sensor");
         int color = 0xff4CAF50;
         mToolbar.setBackgroundColor(color);
-        RelativeLayout layout = (RelativeLayout)findViewById(R.id.accel_layout);
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT
+        FrameLayout layout = (FrameLayout)findViewById(R.id.accel_layout);
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT
                 ,ViewGroup.LayoutParams.MATCH_PARENT);
-        params.addRule(RelativeLayout.BELOW, R.id.toolbar_accel);
-        layout.addView(renderView,params);
+        layout.addView(renderView, params);
 
         mSensorManager = MyApplication.getInstance().getSensorManager();
         mAccelSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
         mAccelerateChangeListener = renderView.getListener();
 
+        mDialog = OtherUtils.getInfoDialog(this,mAccelSensor);
 
     }
 
@@ -104,6 +109,10 @@ public class AccelerometerActivity extends ActionBarActivity implements SensorEv
     }
 
 
+    @Override
+    public void onInfoBtnClick() {
+        mDialog.show();
+    }
 
 
     @Override
