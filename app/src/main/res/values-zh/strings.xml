@@ -1,4 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">传感器工具箱</string>
+
+    <string name="distance_name">距离传感器</string>
+    <string name="compass_name">指南针</string>
+    <string name="sound_name">声波</string>
+    <string name="light_name">光线传感器</string>
+    <string name="gravity_name">加速计</string>
+
+
+    <string name="magnet_name">磁场感应器</string>
 
 </resources>

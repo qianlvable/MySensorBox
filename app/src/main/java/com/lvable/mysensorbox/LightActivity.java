@@ -11,7 +11,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.github.mikephil.charting.charts.HorizontalBarChart;
 import com.lvable.mysensorbox.sensor.framework.util.LightSensorProvider;
 
 
@@ -22,6 +24,8 @@ public class LightActivity extends ActionBarActivity implements SensorEventListe
     private float maxRange;
     private Toolbar mToolbar;
     private ImageView mLightImageView;
+    private TextView mTextViewValue;
+
     private int[] imageResId = {R.drawable.light1,R.drawable.light2,
             R.drawable.light3,R.drawable.light4,R.drawable.light4};
     @Override
@@ -32,13 +36,14 @@ public class LightActivity extends ActionBarActivity implements SensorEventListe
         mSensorManager = MyApplication.getInstance().getSensorManager();
         mLightSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
 
-        // TODO: add check sensor available
         maxRange = mLightSensor.getMaximumRange() / 5;
 
+        mTextViewValue = (TextView)findViewById(R.id.tv_light_val);
         mLightImageView = (ImageView)findViewById(R.id.iv_light);
         mToolbar = (Toolbar)findViewById(R.id.toolbar_light);
         mToolbar.setLogo(R.drawable.logo);
         mToolbar.setTitle("Light sensor");
+
     }
 
     @Override
@@ -56,7 +61,7 @@ public class LightActivity extends ActionBarActivity implements SensorEventListe
     @Override
     public void onSensorChanged(SensorEvent sensorEvent) {
         mLumino = sensorEvent.values[0];
-
+        mTextViewValue.setText(mLumino+" Lu");
         if( mLumino < 50){
             mLightImageView.setImageResource(imageResId[0]);
         }else if ( 50 <= mLumino && mLumino < 90){

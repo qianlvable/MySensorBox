@@ -2,7 +2,6 @@ package com.lvable.mysensorbox;
 
 import android.content.Intent;
 import android.hardware.Sensor;
-import android.os.Handler;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -72,14 +71,14 @@ public class MainActivity extends ActionBarActivity implements CardAdapter.CardO
         mIconDatas.add(new IconData(R.string.distance_name,R.drawable.ic_distance4,
                 getResources().getColor(R.color.light_white),getResources().getColor(R.color.light_gray)));
 
-        mIconDatas.add(new IconData(R.string.sound_name,R.drawable.c3,
+        mIconDatas.add(new IconData(R.string.sound_name,R.drawable.sound_icon,
                 getResources().getColor(R.color.light_yellow),getResources().getColor(R.color.dark_yellow)));
         mIconDatas.add(new IconData(R.string.compass_name,R.drawable.compass_icon,
                 getResources().getColor(R.color.light_purple),getResources().getColor(R.color.dark_purple)));
-        mIconDatas.add(new IconData(R.string.gravity_name,R.drawable.c5,
+        mIconDatas.add(new IconData(R.string.gravity_name,R.drawable.accel_icon,
                 getResources().getColor(R.color.light_brown),getResources().getColor(R.color.dark_brown)));
-        mIconDatas.add(new IconData(R.string.add,R.drawable.c6,
-                getResources().getColor(R.color.green_yellow),getResources().getColor(R.color.dark_green_yellow)));
+        mIconDatas.add(new IconData(R.string.magnet_name,R.drawable.magnet_icon,
+                getResources().getColor(R.color.light_bluegray),getResources().getColor(R.color.dark_bluegray)));
     }
 
     SupportAnimator.AnimatorListener revealAnimationListener = new SupportAnimator.AnimatorListener() {
@@ -90,36 +89,29 @@ public class MainActivity extends ActionBarActivity implements CardAdapter.CardO
 
         @Override
         public void onAnimationEnd() {
-            Intent intent;
+            Intent intent = null;
             switch (clickedItemId){
                 case 0:
                     intent = new Intent(MainActivity.this, LightActivity.class);
-                    startActivity(intent);
-                    overridePendingTransition(0, 0);
                     break;
                 case 1:
                     intent = new Intent(MainActivity.this, DistanceActivity.class);
-                    startActivity(intent);
-                    overridePendingTransition(0, 0);
                     break;
                 case 2:
                     intent = new Intent(MainActivity.this,SoundWaveActivity.class);
-                    startActivity(intent);
-                    overridePendingTransition(0, 0);
                     break;
                 case 3:
                     intent = new Intent(MainActivity.this, CompassActivity.class);
-                    startActivity(intent);
-                    overridePendingTransition(0, 0);
                     break;
                 case 4:
                     intent = new Intent(MainActivity.this, AccelerometerActivity.class);
-                    startActivity(intent);
-                    overridePendingTransition(0, 0);
                     break;
                 case 5:
+                    intent = new Intent(MainActivity.this, MagneticActivity.class);
                     break;
             }
+            startActivity(intent);
+            overridePendingTransition(0, 0);
         }
 
         @Override
@@ -169,6 +161,7 @@ public class MainActivity extends ActionBarActivity implements CardAdapter.CardO
                 }
                 break;
             case 5:
+
                 break;
         }
         mRevealView.setBackgroundColor(clickColor);

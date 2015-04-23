@@ -1,11 +1,15 @@
 package com.lvable.mysensorbox;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -17,6 +21,7 @@ public class TreeSurfaceView extends SurfaceView implements Runnable {
     private SurfaceHolder mHolder;
     private volatile boolean running = false;
     private Paint mPaint;
+    private Paint mTextPaint;
     private float degrees = 0;
     static int F2Ccount = 20;
     static int C2Fcount = 0;
@@ -27,6 +32,10 @@ public class TreeSurfaceView extends SurfaceView implements Runnable {
 
     private STATE mState;
     private STATE mPreState;
+    private Bitmap infoBtn;
+
+    private int width = 0;
+    private int height = 0;
 
 
     boolean isHasData = false;
@@ -44,9 +53,16 @@ public class TreeSurfaceView extends SurfaceView implements Runnable {
         mPaint.setStrokeWidth(strokeWidth);
         mPaint.setAntiAlias(true);
 
+        mTextPaint = new Paint();
+        mTextPaint.setColor(Color.BLACK);
+        mTextPaint.setAntiAlias(true);
+        mTextPaint.setTextSize(60);
+        mTextPaint.setTextAlign(Paint.Align.CENTER);
+
         mState = STATE.CLOSED_FAR;
         mPreState = STATE.CLOSED;
 
+        infoBtn = BitmapFactory.decodeResource(getResources(), R.drawable.info_icon2);
     }
 
 
@@ -55,10 +71,20 @@ public class TreeSurfaceView extends SurfaceView implements Runnable {
         while (running){
             if (!mHolder.getSurface().isValid())
                 continue;
+
+
             if (mState != mPreState || !isAnimationFinish) {
                 Canvas canvas = mHolder.lockCanvas();
-                int width = canvas.getWidth();
-                int height = canvas.getHeight();
+                canvas.drawRGB(102, 187, 106);
+                width = canvas.getWidth();
+                height = canvas.getHeight();
+
+                canvas.drawBitmap(infoBtn,width*0.85f,height*0.05f,null);
+
+                if (mState == STATE.FAR || mState == STATE.CLOSED_FAR)
+                    canvas.drawText("Far",width/2,height*0.1f,mTextPaint);
+                else
+                    canvas.drawText("Closed",width/2,height*0.1f,mTextPaint);
 
                 switch (mState) {
                     case CLOSED:
@@ -91,14 +117,30 @@ public class TreeSurfaceView extends SurfaceView implements Runnable {
                         break;
                 }
 
-                canvas.drawRGB(102, 187, 106);
-                canvas.translate(width / 2, height);
-                branch(canvas, (float) (width * 0.3));
+
+                canvas.translate(width/2, height);
+                branch(canvas, (float) (width * 0.35));
                 isHasData = true;
 
                 mHolder.unlockCanvasAndPost(canvas);
             }
         }
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN){
+            float x = event.getX();
+            float y = event.getY();
+            float bitmapLX = width*0.85f;
+            float bitmapRX = bitmapLX + infoBtn.getWidth();
+            float bitmapTop = height*0.05f;
+            float bitmapLow = bitmapTop + infoBtn.getHeight();
+            if ( x > bitmapLX && x < bitmapRX && y > bitmapTop && y < bitmapLow){
+                Toast.makeText(getContext(),"AHa",Toast.LENGTH_SHORT).show();
+            }
+        }
+        return true;
     }
 
     void branch(Canvas canvas,float len){

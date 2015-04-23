@@ -8,16 +8,10 @@
     <string name="gravity_name">Gravity Sensor</string>
     <string name="elevation_name">Elevation Sensor</string>
 
-    <string name="leader_board">LeaderBoard</string>
-    <string name="chemistry">Chemistry</string>
-    <string name="music">Music</string>
-    <string name="bio">Biology</string>
-    <string name="phys">Physics</string>
-    <string name="add">Add more</string>
+    <string name="magnet_name">Magnet Sensor</string>
     <string name="title_activity_distance">DistanceActivity</string>
 
-    <string name="hello_world">Hello world!</string>
-    <string name="action_settings">Settings</string>
+
     <string name="title_activity_sound_wave">SoundWaveActivity</string>
     <string name="title_activity_light">LightActivity</string>
     <string name="title_activity_compass">CompassActivity</string>

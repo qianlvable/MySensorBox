@@ -3,7 +3,7 @@
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/card_layout"
         android:orientation="vertical"
-        android:background="#F7DA81"
+        android:background="#2D4254"
         android:layout_width="match_parent"
         android:layout_height="230dp"
         android:layout_margin="3dp">
@@ -11,12 +11,12 @@
             android:id="@+id/icon_img"
             android:padding="20dp"
             android:layout_width="match_parent"
-            android:src="@drawable/test"
+            android:src="@drawable/magnet_icon"
             android:layout_height="0dp"
             android:layout_weight="6"/>
         <TextView
             android:id="@+id/bottom_text"
-            android:background="#51c23d"
+            android:background="#243C51"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:text="Test"

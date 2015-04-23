@@ -1,12 +1,16 @@
 package com.lvable.mysensorbox;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.widget.Toast;
 
 import java.util.Random;
 
@@ -26,6 +30,9 @@ public class BallSurfaceView extends SurfaceView implements Runnable,Acceleromet
     private Mover[] mMovers = new Mover[3];
     private PVector mAccel = new PVector(0,0);
     private StringBuffer sb = new StringBuffer();
+    private Bitmap infoBtn;
+    private int width = 0;
+    private int height = 0;
 
     public BallSurfaceView(Context context) {
         super(context);
@@ -40,15 +47,14 @@ public class BallSurfaceView extends SurfaceView implements Runnable,Acceleromet
         mMoverPaint.setColor(Color.YELLOW);
 
         mAttractorPaint.setAntiAlias(true);
-        mAttractorPaint.setColor(Color.BLUE);
+        mAttractorPaint.setColor(0xfff7db08);
         mRandom = new Random();
         mMoverPaint.setStrokeWidth(2);
         mAttractorBall = new Attractor(getWidth()/2,getHeight()/2);
         for (int i =0;i < mMovers.length;i++){
-            float m = (float) (Math.random()*1.5+0.1);
+            float m = (float) (Math.random()*1+0.33);
             mMovers[i] = new Mover(m,0,0);
             mMovers[i].color = Color.rgb(mRandom.nextInt(255), mRandom.nextInt(255), mRandom.nextInt(255));
-
         }
 
         mTextPaint = new Paint();
@@ -56,6 +62,8 @@ public class BallSurfaceView extends SurfaceView implements Runnable,Acceleromet
         mTextPaint.setColor(Color.WHITE);
         mTextPaint.setTextSize(50);
         mTextPaint.setAntiAlias(true);
+
+        infoBtn = BitmapFactory.decodeResource(getResources(),R.drawable.info_icon2);
     }
 
     public void resume(){
@@ -70,9 +78,10 @@ public class BallSurfaceView extends SurfaceView implements Runnable,Acceleromet
             if (!mHolder.getSurface().isValid())
                 continue;
             Canvas canvas = mHolder.lockCanvas();
-            int width = canvas.getWidth();
-            int height = canvas.getHeight();
-            canvas.drawRGB(0, 0, 0);
+            width = canvas.getWidth();
+            height = canvas.getHeight();
+            canvas.drawRGB(159, 134, 125);
+            canvas.drawBitmap(infoBtn,width*0.85f,height*0.05f,null);
             if (isFirst){
                 if (mHolder.getSurface().isValid()){
                     for (int i =0;i < mMovers.length;i++){
@@ -84,6 +93,8 @@ public class BallSurfaceView extends SurfaceView implements Runnable,Acceleromet
                     mAttractorBall.setLocation(width/2,height/2);
                 }
                 isFirst = false;
+                sb.append("X : 0 Y : 0 Z : 0");
+                canvas.drawText(sb.toString(), width / 2, height * 0.8f, mTextPaint);
 
             }
 
@@ -114,7 +125,8 @@ public class BallSurfaceView extends SurfaceView implements Runnable,Acceleromet
                 mAttractorBall.location.y = 0;
                 mAttractorBall.velocity.mult(0);
             }
-            canvas.drawCircle(mAttractorBall.location.x, mAttractorBall.location.y, mAttractorBall.mass, mAttractorPaint);
+            canvas.drawCircle(mAttractorBall.location.x, mAttractorBall.location.y,
+                    mAttractorBall.mass, mAttractorPaint);
             canvas.drawText(sb.toString(), width / 2, height * 0.8f, mTextPaint);
 
             mHolder.unlockCanvasAndPost(canvas);
@@ -133,6 +145,22 @@ public class BallSurfaceView extends SurfaceView implements Runnable,Acceleromet
 
         }
     }
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        if (event.getAction() == MotionEvent.ACTION_DOWN){
+            float x = event.getX();
+            float y = event.getY();
+            float bitmapLX = width*0.85f;
+            float bitmapRX = bitmapLX + infoBtn.getWidth();
+            float bitmapTop = height*0.05f;
+            float bitmapLow = bitmapTop + infoBtn.getHeight();
+            if ( x > bitmapLX && x < bitmapRX && y > bitmapTop && y < bitmapLow){
+                Toast.makeText(getContext(), "AHa", Toast.LENGTH_SHORT).show();
+            }
+        }
+        return true;
+    }
+
 
     public AccelerometerActivity.AccelerateChangeListener getListener() {
         return this;
@@ -140,8 +168,8 @@ public class BallSurfaceView extends SurfaceView implements Runnable,Acceleromet
 
     @Override
     public void dataChange(float dx, float dy,float dz) {
-        mAccel.x = -dx*0.8f ;
-        mAccel.y = dy*0.8f;
+        mAccel.x = -dx*1.2f;
+        mAccel.y = dy*1.2f;
         sb.setLength(0);
 
         sb.append(String.format("X : %.2f Y : %.2f Z : %.2f",dx,dy,dz));

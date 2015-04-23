@@ -5,5 +5,32 @@
                 tools:context="com.lvable.mysensorbox.MagneticActivity">
 
     <include layout="@layout/toolbar_layout" android:id="@+id/toolbar_magnetic"/>
+    <com.github.mikephil.charting.charts.HorizontalBarChart
+        android:layout_alignParentBottom="true"
+        android:id="@+id/mag_chart"
+        android:layout_width="match_parent"
+        android:layout_height="360dp"/>
 
+    <TextView
+        android:id="@+id/tv_mag_val"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="50 μT"
+        android:textColor="#fff"
+        android:layout_below="@id/toolbar_magnetic"
+        android:layout_centerHorizontal="true"
+        android:textSize="50sp"
+        android:layout_marginTop="35dp"
+        />
+
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/info_btn_compass"
+        android:src="@drawable/info_icon2"
+        android:background="@null"
+        android:layout_below="@+id/toolbar_magnetic"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="40dp"/>
 </RelativeLayout>

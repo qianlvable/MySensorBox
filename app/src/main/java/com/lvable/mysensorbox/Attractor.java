@@ -48,14 +48,15 @@ public class Attractor {
     }
 
     void applyForce(PVector force){
-        acceleration = force;
+       // acceleration = force;
+        velocity = force;
         Log.d("wtf",acceleration.toString());
     }
 
     void update(){
-        velocity.add(acceleration);
+        //velocity.add(acceleration);
         location.add(velocity);
         Log.d("speed",velocity.toString());
-        acceleration.mult(0);
+       // acceleration.mult(0);
     }
 }
