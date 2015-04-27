@@ -18,7 +18,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="28sp"
-        android:text="Light Intensity"
+        android:text="@string/ligh_value_title"
         android:id="@+id/tv_light"
         android:layout_marginTop="30dp"
         android:layout_below="@id/iv_light"

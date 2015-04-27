@@ -37,19 +37,14 @@ public class MainActivity extends ActionBarActivity implements CardAdapter.CardO
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         loadIconDatas();
-        getWindow().setBackgroundDrawable(null);
+        findView();
+        setupToolbar();
+        setupCardUI();
+        getSensorAvailbilityInfo();
 
-        mToolbar = (Toolbar) findViewById(R.id.tool_bar);
-        setSupportActionBar(mToolbar);
-        mToolbar.setLogo(R.drawable.logo);
+    }
 
-        mRecyclerView = (RecyclerView)findViewById(R.id.grid_recycler_view);
-        mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-        mRecyclerView.setAdapter(new CardAdapter(mIconDatas, this));
-
-        mRevealView = findViewById(R.id.reveal_view);
-
+    private void getSensorAvailbilityInfo() {
         List<Sensor> sensorList = MyApplication.getInstance().getSensorManager().getSensorList(Sensor.TYPE_ALL);
         for (Sensor s: sensorList){
             if (s.getType() == Sensor.TYPE_ACCELEROMETER)
@@ -61,14 +56,30 @@ public class MainActivity extends ActionBarActivity implements CardAdapter.CardO
             else if (s.getType() == Sensor.TYPE_MAGNETIC_FIELD)
                 hasMagneticSensor = true;
         }
+    }
 
+    private void setupCardUI() {
+        mRecyclerView.setHasFixedSize(true);
+        mRecyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        mRecyclerView.setAdapter(new CardAdapter(mIconDatas, this));
+    }
+
+    private void findView() {
+        mRevealView = findViewById(R.id.reveal_view);
+        mRecyclerView = (RecyclerView)findViewById(R.id.grid_recycler_view);
+        mToolbar = (Toolbar) findViewById(R.id.tool_bar);
+    }
+
+    private void setupToolbar() {
+        setSupportActionBar(mToolbar);
+        mToolbar.setLogo(R.drawable.logo);
     }
 
     private void loadIconDatas() {
         mIconDatas = new ArrayList<IconData>();
         mIconDatas.add(new IconData(R.string.light_name,R.drawable.light_icon,
                 getResources().getColor(R.color.light_blue),getResources().getColor(R.color.dark_blue)));
-        mIconDatas.add(new IconData(R.string.distance_name,R.drawable.ic_distance4,
+        mIconDatas.add(new IconData(R.string.distance_name,R.drawable.ic_distance,
                 getResources().getColor(R.color.light_white),getResources().getColor(R.color.light_gray)));
 
         mIconDatas.add(new IconData(R.string.sound_name,R.drawable.sound_icon,
@@ -132,14 +143,14 @@ public class MainActivity extends ActionBarActivity implements CardAdapter.CardO
         switch (itemId){
             case 0:
                 if (!hasLightSensor) {
-                    Toast.makeText(getApplicationContext(), "Sorry,the light sensor is not available!"
+                    Toast.makeText(getApplicationContext(), getString(R.string.sorry_light)
                             , Toast.LENGTH_LONG).show();
                     return;
                 }
                 break;
             case 1:
                 if (!hasDistanceSensor) {
-                    Toast.makeText(getApplicationContext(), "Sorry,the distance sensor is not available!"
+                    Toast.makeText(getApplicationContext(), getString(R.string.sorry_distance)
                             , Toast.LENGTH_LONG).show();
                     return;
                 }
@@ -148,20 +159,24 @@ public class MainActivity extends ActionBarActivity implements CardAdapter.CardO
                 break;
             case 3:
                 if (!hasMagneticSensor && !hasAccelSensor){
-                    Toast.makeText(getApplicationContext(), "Sorry,the compass is not available!"
+                    Toast.makeText(getApplicationContext(), getString(R.string.sorry_compass)
                             , Toast.LENGTH_LONG).show();
                     return;
                 }
                 break;
             case 4:
                 if (!hasAccelSensor) {
-                    Toast.makeText(getApplicationContext(), "Sorry,the accelerate sensor is not available!"
+                    Toast.makeText(getApplicationContext(), getString(R.string.sorry_accel)
                             , Toast.LENGTH_LONG).show();
                     return;
                 }
                 break;
             case 5:
-
+                if (!hasMagneticSensor) {
+                    Toast.makeText(getApplicationContext(), getString(R.string.sorry_magnet)
+                            , Toast.LENGTH_LONG).show();
+                    return;
+                }
                 break;
         }
         mRevealView.setBackgroundColor(clickColor);

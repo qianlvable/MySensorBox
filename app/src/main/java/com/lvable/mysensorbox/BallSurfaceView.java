@@ -23,14 +23,14 @@ public class BallSurfaceView extends SurfaceView implements Runnable,Acceleromet
     private Random mRandom;
     private Paint mMoverPaint = new Paint();
     private Paint mAttractorPaint = new Paint();
-    private Paint mTextPaint;
+
     private Attractor mAttractorBall;
     private Mover[] mMovers = new Mover[3];
     private PVector mAccel = new PVector(0,0);
-    private StringBuffer sb = new StringBuffer();
     private Bitmap infoBtn;
     private int width = 0;
     private int height = 0;
+    private boolean mIsPanelOpen;
     private SurfaceViewInfoBtnClickListener mOnInfoClickListener;
 
 
@@ -57,12 +57,6 @@ public class BallSurfaceView extends SurfaceView implements Runnable,Acceleromet
             mMovers[i].color = Color.rgb(mRandom.nextInt(255), mRandom.nextInt(255), mRandom.nextInt(255));
         }
 
-        mTextPaint = new Paint();
-        mTextPaint.setTextAlign(Paint.Align.CENTER);
-        mTextPaint.setColor(Color.WHITE);
-        mTextPaint.setTextSize(50);
-        mTextPaint.setAntiAlias(true);
-
         infoBtn = BitmapFactory.decodeResource(getResources(),R.drawable.info_icon2);
     }
 
@@ -77,59 +71,58 @@ public class BallSurfaceView extends SurfaceView implements Runnable,Acceleromet
         while (running){
             if (!mHolder.getSurface().isValid())
                 continue;
-            Canvas canvas = mHolder.lockCanvas();
-            width = canvas.getWidth();
-            height = canvas.getHeight();
-            canvas.drawRGB(159, 134, 125);
-            canvas.drawBitmap(infoBtn,width*0.85f,height*0.05f,null);
-            if (isFirst){
-                if (mHolder.getSurface().isValid()){
-                    for (int i =0;i < mMovers.length;i++){
-                        float x = (mRandom.nextInt(width));
-                        float y = (mRandom.nextInt(height));
-                        mMovers[i].location.x = x;
-                        mMovers[i].location.y = y;
+            if (!mIsPanelOpen) {
+                Canvas canvas = mHolder.lockCanvas();
+                width = canvas.getWidth();
+                height = canvas.getHeight();
+                canvas.drawRGB(159, 134, 125);
+                canvas.drawBitmap(infoBtn, width * 0.85f, height * 0.05f, null);
+                if (isFirst) {
+                    if (mHolder.getSurface().isValid()) {
+                        for (int i = 0; i < mMovers.length; i++) {
+                            float x = (mRandom.nextInt(width));
+                            float y = (mRandom.nextInt(height));
+                            mMovers[i].location.x = x;
+                            mMovers[i].location.y = y;
+                        }
+                        mAttractorBall.setLocation(width / 2, height / 2);
                     }
-                    mAttractorBall.setLocation(width/2,height/2);
+                    isFirst = false;
+
                 }
-                isFirst = false;
-                sb.append("X : 0 Y : 0 Z : 0");
-                canvas.drawText(sb.toString(), width / 2, height * 0.8f, mTextPaint);
 
-            }
+                for (int i = 0; i < mMovers.length; i++) {
+                    PVector force = mAttractorBall.attract(mMovers[i]);
+                    mMovers[i].applyForce(force);
+                    mMovers[i].update();
 
-            for (int i =0;i < mMovers.length;i++){
-                PVector force = mAttractorBall.attract(mMovers[i]);
-                mMovers[i].applyForce(force);
-                mMovers[i].update();
+                    mMoverPaint.setColor(mMovers[i].color);
+                    canvas.drawCircle(mMovers[i].location.x, mMovers[i].location.y, mMovers[i].mass * 40, mMoverPaint);
+                }
 
-                mMoverPaint.setColor(mMovers[i].color);
-                canvas.drawCircle(mMovers[i].location.x,mMovers[i].location.y,mMovers[i].mass * 40, mMoverPaint);
-            }
+                mAttractorBall.applyForce(mAccel);
+                mAttractorBall.update();
+                if (mAttractorBall.location.x > width) {
+                    mAttractorBall.location.x = width;
+                    mAttractorBall.velocity.mult(0);
+                }
+                if (mAttractorBall.location.y > height) {
+                    mAttractorBall.location.y = height;
+                    mAttractorBall.velocity.mult(0);
+                }
+                if (mAttractorBall.location.x < 0) {
+                    mAttractorBall.location.x = 0;
+                    mAttractorBall.velocity.mult(0);
+                }
+                if (mAttractorBall.location.y < 0) {
+                    mAttractorBall.location.y = 0;
+                    mAttractorBall.velocity.mult(0);
+                }
+                canvas.drawCircle(mAttractorBall.location.x, mAttractorBall.location.y,
+                        mAttractorBall.mass, mAttractorPaint);
 
-            mAttractorBall.applyForce(mAccel);
-            mAttractorBall.update();
-            if (mAttractorBall.location.x > width) {
-                mAttractorBall.location.x = width;
-                mAttractorBall.velocity.mult(0);
+                mHolder.unlockCanvasAndPost(canvas);
             }
-            if (mAttractorBall.location.y > height) {
-                mAttractorBall.location.y = height;
-                mAttractorBall.velocity.mult(0);
-            }
-            if (mAttractorBall.location.x < 0) {
-                mAttractorBall.location.x = 0;
-                mAttractorBall.velocity.mult(0);
-            }
-            if (mAttractorBall.location.y <0) {
-                mAttractorBall.location.y = 0;
-                mAttractorBall.velocity.mult(0);
-            }
-            canvas.drawCircle(mAttractorBall.location.x, mAttractorBall.location.y,
-                    mAttractorBall.mass, mAttractorPaint);
-            canvas.drawText(sb.toString(), width / 2, height * 0.8f, mTextPaint);
-
-            mHolder.unlockCanvasAndPost(canvas);
         }
     }
 
@@ -167,11 +160,10 @@ public class BallSurfaceView extends SurfaceView implements Runnable,Acceleromet
     }
 
     @Override
-    public void dataChange(float dx, float dy,float dz) {
+    public void dataChange(boolean isPanelOpen,float dx, float dy,float dz) {
+        mIsPanelOpen = isPanelOpen;
         mAccel.x = -dx*1.2f;
         mAccel.y = dy*1.2f;
-        sb.setLength(0);
 
-        sb.append(String.format("X : %.2f Y : %.2f Z : %.2f",dx,dy,dz));
     }
 }

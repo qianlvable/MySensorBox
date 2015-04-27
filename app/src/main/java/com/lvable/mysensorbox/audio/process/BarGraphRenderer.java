@@ -35,7 +35,7 @@ public class BarGraphRenderer extends Renderer {
     }
     @Override
     public void onRender(Canvas canvas, FFTData data, Rect rect) {
-        for (int i = 1; i < data.getBytes().length / 80 ; i++) {
+        for (int i = 1; i < data.getBytes().length / mDivisions; i++) {
 
             mFFTPoints[i * 4] = i * 4 * mDivisions;     // x0
             mFFTPoints[i * 4 + 2] = mFFTPoints[i * 4]; // x1
@@ -48,7 +48,7 @@ public class BarGraphRenderer extends Renderer {
 
             if (mTop) {
                 mFFTPoints[i * 4 + 1] = 0;                  // y0
-                mFFTPoints[i * 4 + 3] = (dbValue * 4 - 10); // y1
+                mFFTPoints[i * 4 + 3] = (dbValue * 4 - 20); // y1
             } else {
                 mFFTPoints[i * 4 + 1] = rect.height();
                 mFFTPoints[i * 4 + 3] = rect.height() - (dbValue * 8 - 10);

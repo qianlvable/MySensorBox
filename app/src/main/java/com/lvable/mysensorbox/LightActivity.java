@@ -48,11 +48,10 @@ public class LightActivity extends ActionBarActivity implements SensorEventListe
         mTextViewValue = (TextView)findViewById(R.id.tv_light_val);
         mLightImageView = (ImageView)findViewById(R.id.iv_light);
         mToolbar = (Toolbar)findViewById(R.id.toolbar_light);
-        mToolbar.setLogo(R.drawable.logo);
-        mToolbar.setTitle("Light sensor");
+        setupToolbar();
 
 
-        mDialog = OtherUtils.getInfoDialog(this,mLightSensor);
+        mDialog = OtherUtils.getInfoDialog(this,mLightSensor,getString(R.string.light_extra_content));
 
 
         mInfoBtn.setOnClickListener(new View.OnClickListener() {
@@ -63,6 +62,14 @@ public class LightActivity extends ActionBarActivity implements SensorEventListe
             }
         });
 
+    }
+
+    private void setupToolbar() {
+        mToolbar.setLogo(R.drawable.logo);
+        mToolbar.setTitle(getString(R.string.toolbar_light_title));
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
     }
 
     @Override
@@ -93,7 +100,7 @@ public class LightActivity extends ActionBarActivity implements SensorEventListe
             mLightImageView.setImageResource(imageResId[4]);
         }
 
-        Log.d("light", "the light is " + mLumino);
+       // Log.d("light", "the light is " + mLumino);
     }
 
     @Override

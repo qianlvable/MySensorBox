@@ -14,7 +14,7 @@
         app:columnCount="4"
         >
         <TextView
-            android:text="Infomation"
+            android:text="@string/dialog_main_title"
             android:textSize="28sp"
             app:layout_columnSpan="4"
             app:layout_gravity="left"
@@ -22,7 +22,7 @@
 
 
         <TextView
-            android:text="Name :"
+            android:text="@string/sensor_name_title"
             app:layout_gravity="right"
             />
 
@@ -31,7 +31,7 @@
             android:id="@+id/sensor_name"/>
 
         <TextView
-            android:text="Vendor :"
+            android:text="@string/sensor_vendor_tilte"
 
             app:layout_column="0"
             app:layout_gravity="right"
@@ -41,7 +41,7 @@
             android:text="unknown vendor"
             android:id="@+id/sensor_vendor"/>
         <TextView
-            android:text="Power :"
+            android:text="@string/sensor_power_title"
 
             app:layout_column="0"
             app:layout_gravity="right"
@@ -52,7 +52,7 @@
             android:id="@+id/sensor_power"/>
 
         <TextView
-            android:text="Max Range :"
+            android:text="@string/sensor_range_title"
 
             app:layout_column="0"
             app:layout_gravity="right"
@@ -63,14 +63,14 @@
             android:id="@+id/sensor_range"/>
 
         <TextView
-
-            android:text="More"
+            android:text="@string/dialog_sub_title"
             android:textSize="24sp"
             app:layout_columnSpan="4"
             app:layout_gravity="left"
             />
     </android.support.v7.widget.GridLayout>
     <TextView
+        android:autoLink="web"
         android:id="@+id/extra_content"
         android:layout_below="@id/sensor_info_grid"
         android:padding="5dp"

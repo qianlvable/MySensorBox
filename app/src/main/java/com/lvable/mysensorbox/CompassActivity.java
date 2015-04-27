@@ -43,19 +43,25 @@ public class CompassActivity extends ActionBarActivity implements SensorEventLis
         mPointer = (ImageView) findViewById(R.id.compass_img);
         mDataTextView = (TextView)findViewById(R.id.tv_amz);
         mToolbar = (Toolbar)findViewById(R.id.toolbar_compass);
-        int toolbarColor = 0xff314FA0;
-        mToolbar.setBackgroundColor(toolbarColor);
-        mToolbar.setTitle("Compass");
-        mToolbar.setLogo(R.drawable.logo);
+        setupToolbar();
 
-        mDialog = OtherUtils.getInfoDialog(this, mMagnetSensor);
-
+        mDialog = OtherUtils.getInfoDialog(this, mMagnetSensor,getString(R.string.compass_extra_content));
         mInfoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mDialog.show();
             }
         });
+    }
+
+    private void setupToolbar() {
+        int toolbarColor = 0xff314FA0;
+        mToolbar.setBackgroundColor(toolbarColor);
+        mToolbar.setTitle(getString(R.string.toolbar_compass_title));
+        mToolbar.setLogo(R.drawable.logo);
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
     }
 
     protected void onResume() {
@@ -95,7 +101,7 @@ public class CompassActivity extends ActionBarActivity implements SensorEventLis
             mPointer.startAnimation(ra);
 
             mCurrentDegree = -azimuthInDegress;
-            mDataTextView.setText(String.format("Azimuth : %.2f",azimuthInDegress));
+            mDataTextView.setText(String.format(getString(R.string.azimuth),azimuthInDegress));
         }
     }
 

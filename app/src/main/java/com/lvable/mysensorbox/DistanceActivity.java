@@ -1,6 +1,7 @@
 package com.lvable.mysensorbox;
 
 import android.app.AlertDialog;
+import android.content.SharedPreferences;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -9,8 +10,12 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.RelativeLayout;
+
 
 
 public class DistanceActivity extends ActionBarActivity implements SensorEventListener,SurfaceViewInfoBtnClickListener{
@@ -19,30 +24,71 @@ public class DistanceActivity extends ActionBarActivity implements SensorEventLi
     private float mCurDistance;
     private TreeSurfaceView mRenderView;
     private Toolbar mToolbar;
+    private View tutorialView;
     private float maxRange;
     private float preDistance;
     private AlertDialog mDialog;
+    private boolean isFirstIn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mRenderView = new TreeSurfaceView(this,this);
         setContentView(R.layout.activity_distance);
 
-        mToolbar = (Toolbar)findViewById(R.id.toolbar_distance);
-        mToolbar.setLogo(R.drawable.logo);
-        mToolbar.setTitle("Distance sensor");
-
+        setUpToolbar();
+        mRenderView = new TreeSurfaceView(this,this);
         RelativeLayout layout = (RelativeLayout)findViewById(R.id.distance_layout);
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT
                 ,ViewGroup.LayoutParams.MATCH_PARENT);
         params.addRule(RelativeLayout.BELOW, R.id.toolbar_distance);
         layout.addView(mRenderView, params);
 
+        setUpTutorialView(layout, params);
+
         mSensorManager = MyApplication.getInstance().getSensorManager();
         mProximitySensor = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
 
         maxRange = mProximitySensor.getMaximumRange();
-        mDialog = OtherUtils.getInfoDialog(this, mProximitySensor);
+        mDialog = OtherUtils.getInfoDialog(this, mProximitySensor, getString(R.string.distance_extra_content));
+    }
+
+    private void setUpTutorialView(RelativeLayout layout, RelativeLayout.LayoutParams params) {
+        final SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
+        isFirstIn = sharedPreferences.getBoolean("first_distance",true);
+        if (isFirstIn){
+            OtherUtils.saveFirstTimeInfo(sharedPreferences, "first_distance");
+            mRenderView.setVisibility(View.GONE);
+            LayoutInflater inflater = getLayoutInflater();
+            tutorialView = inflater.inflate(R.layout.distance_showcase,null);
+            layout.addView(tutorialView, params);
+            Button btn = (Button)tutorialView.findViewById(R.id.btn_ok);
+            btn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    OtherUtils.dismissTutorialView(mRenderView, tutorialView);
+                }
+            });
+            tutorialView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    OtherUtils.dismissTutorialView(mRenderView, tutorialView);
+
+                }
+            });
+
+
+        }
+    }
+
+
+
+
+    private void setUpToolbar() {
+        mToolbar = (Toolbar)findViewById(R.id.toolbar_distance);
+        mToolbar.setLogo(R.drawable.logo);
+        mToolbar.setTitle("Distance sensor");
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
     }
 
     @Override
@@ -83,7 +129,6 @@ public class DistanceActivity extends ActionBarActivity implements SensorEventLi
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int i) {
-
 
     }
 

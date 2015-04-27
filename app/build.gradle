@@ -28,7 +28,6 @@ dependencies {
     compile project(':circualreveal')
     compile files('libs/simplesound-0.1.jar')
     compile files('libs/mpandroidchartlibrary-2-0-9.jar')
-
     compile 'com.android.support:appcompat-v7:+'
     compile 'com.android.support:gridlayout-v7:+'
 

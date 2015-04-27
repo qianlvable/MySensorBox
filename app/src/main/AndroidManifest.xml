@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.lvable.mysensorbox" >
-
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
 
@@ -22,23 +22,43 @@
         </activity>
         <activity
             android:name=".DistanceActivity"
-            android:label="@string/title_activity_distance" >
+            android:label="@string/title_activity_distance"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
         </activity>
         <activity
             android:name=".SoundWaveActivity"
-            android:label="@string/title_activity_sound_wave" >
+            android:label="@string/title_activity_sound_wave"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
         </activity>
         <activity
             android:name=".LightActivity"
-            android:label="@string/title_activity_light" >
+            android:label="@string/title_activity_light"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
         </activity>
         <activity
             android:name=".CompassActivity"
-            android:label="@string/title_activity_compass" >
+            android:label="@string/title_activity_compass"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
         </activity>
         <activity
             android:name=".AccelerometerActivity"
-            android:label="@string/title_activity_accelerometer" >
+            android:label="@string/title_activity_accelerometer"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
         </activity>
         <activity
             android:name=".FFTActivity"
@@ -46,7 +66,11 @@
         </activity>
         <activity
             android:name=".MagneticActivity"
-            android:label="@string/title_activity_magnetic" >
+            android:label="@string/title_activity_magnetic"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
         </activity>
     </application>
 

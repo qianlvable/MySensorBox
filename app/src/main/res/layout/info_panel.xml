@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<com.lvable.mysensorbox.InfoPanelLayout
+    android:background="#fff"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <TextView
+
+        android:id="@+id/tv_val"
+        android:textColor="#000"
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="25sp"
+        android:layout_centerHorizontal="true"
+        android:text="X : 0  Y : 0  Z : 0"/>
+    <com.github.mikephil.charting.charts.LineChart
+        android:layout_below="@id/tv_val"
+        android:id="@+id/accel_chart"
+        android:layout_width="match_parent"
+        android:layout_height="350dp" />
+</com.lvable.mysensorbox.InfoPanelLayout>

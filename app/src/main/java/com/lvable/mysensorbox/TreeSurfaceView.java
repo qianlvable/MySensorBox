@@ -52,7 +52,7 @@ public class TreeSurfaceView extends SurfaceView implements Runnable {
         mPaint.setAntiAlias(true);
 
         mTextPaint = new Paint();
-        mTextPaint.setColor(Color.BLACK);
+        mTextPaint.setColor(Color.WHITE);
         mTextPaint.setAntiAlias(true);
         mTextPaint.setTextSize(60);
         mTextPaint.setTextAlign(Paint.Align.CENTER);
@@ -73,16 +73,18 @@ public class TreeSurfaceView extends SurfaceView implements Runnable {
 
             if (mState != mPreState || !isAnimationFinish) {
                 Canvas canvas = mHolder.lockCanvas();
+                if (canvas == null)
+                    continue;
                 canvas.drawRGB(102, 187, 106);
                 width = canvas.getWidth();
                 height = canvas.getHeight();
 
-                canvas.drawBitmap(infoBtn,width*0.85f,height*0.05f,null);
+                canvas.drawBitmap(infoBtn, width * 0.85f, height * 0.05f, null);
 
                 if (mState == STATE.FAR || mState == STATE.CLOSED_FAR)
-                    canvas.drawText("Far",width/2,height*0.1f,mTextPaint);
+                    canvas.drawText(getContext().getString(R.string.far_state),width/2,height*0.1f,mTextPaint);
                 else
-                    canvas.drawText("Closed",width/2,height*0.1f,mTextPaint);
+                    canvas.drawText(getContext().getString(R.string.state_closed),width/2,height*0.1f,mTextPaint);
 
                 switch (mState) {
                     case CLOSED:

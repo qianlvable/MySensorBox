@@ -1,23 +1,14 @@
 package com.lvable.mysensorbox;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.media.AudioFormat;
-import android.media.AudioManager;
-import android.media.AudioRecord;
-import android.media.AudioTrack;
-import android.media.MediaRecorder;
-import android.os.AsyncTask;
 import android.os.Environment;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -25,7 +16,8 @@ import com.lvable.mysensorbox.audio.process.AudioRecordingHandler;
 import com.lvable.mysensorbox.audio.process.AudioRecordingThread;
 import com.lvable.mysensorbox.audio.process.BarGraphRenderer;
 import com.lvable.mysensorbox.audio.process.VisualizerView;
-import com.lvable.mysensorbox.sensor.framework.util.SoundSensorProvider;
+
+import java.io.File;
 
 
 public class SoundWaveActivity extends ActionBarActivity {
@@ -42,32 +34,45 @@ public class SoundWaveActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sound_wave);
+
+        findView();
+        setupVisualizer();
+        setupToolbar();
+        startRecording();
+        setupInfoDialog();
+    }
+
+    private void findView() {
         visualizerView = (VisualizerView) findViewById(R.id.visualizerView);
         mToolbar = (Toolbar)findViewById(R.id.toolbar_sound);
-        mToolbar.setLogo(R.drawable.logo);
-        mToolbar.setTitle("Sound wave sensor");
         dbTextView = (TextView)findViewById(R.id.db_text);
         mInfoBtn = (ImageButton)findViewById(R.id.info_btn_sound);
-        setupVisualizer();
-        fileName = getFileName();
-        startRecording();
+    }
 
+    private void setupInfoDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setPositiveButton("Got it!", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(getString(R.string.got_it), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
             }
         });
         mDialog = builder.create();
-        mDialog.setTitle("Behind the scene");
-        mDialog.setMessage("FFT algorithm");
-
+        View dialogLayout = getLayoutInflater().inflate(R.layout.sound_info_dialog,null);
+        mDialog.setView(dialogLayout);
         mInfoBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mDialog.show();
             }
         });
+    }
+
+    private void setupToolbar() {
+        mToolbar.setLogo(R.drawable.logo);
+        mToolbar.setTitle(getString(R.string.toolbar_sound_title));
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
     }
 
     public static String getFileName() {
@@ -92,6 +97,7 @@ public class SoundWaveActivity extends ActionBarActivity {
     }
 
     private void startRecording() {
+        fileName = getFileName();
         recordingThread = new AudioRecordingThread(fileName, new AudioRecordingHandler() { //pass file name where to store the recorded audio
             @Override
             public void onFftDataCapture(final byte[] bytes) {
@@ -135,6 +141,11 @@ public class SoundWaveActivity extends ActionBarActivity {
         if (recordingThread != null) {
             recordingThread.stopRecording();
             recordingThread = null;
+
+            File f = new File(fileName);
+            if(f.exists()) {
+                f.delete();
+            }
         }
     }
 

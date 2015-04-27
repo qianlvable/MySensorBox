@@ -47,26 +47,34 @@ public class MagneticActivity extends ActionBarActivity implements SensorEventLi
     protected void onCreate(Bundle savedInstanceState) {
          super.onCreate(savedInstanceState);
          setContentView(R.layout.activity_magnetic);
-
+         findView();
          mSensorManager = MyApplication.getInstance().getSensorManager();
          mMagSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
-
-         mMagValTextView = (TextView)findViewById(R.id.tv_mag_val);
-         mToolbar = (Toolbar)findViewById(R.id.toolbar_magnetic);
-         mToolbar.setLogo(R.drawable.logo);
-         mToolbar.setTitle("Magnetic Field");
-
+         mDialog = OtherUtils.getInfoDialog(this, mMagSensor,getString(R.string.mag_extra_content));
+         setupToolbar();
          setupCharUI();
-
-         mDialog = OtherUtils.getInfoDialog(this,mMagSensor);
-         mInfoBtn = (ImageButton)findViewById(R.id.info_btn_magnet);
          mInfoBtn.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View view) {
                  mDialog.show();
              }
          });
+
      }
+
+    private void findView() {
+        mInfoBtn = (ImageButton)findViewById(R.id.info_btn_magnet);
+        mMagValTextView = (TextView)findViewById(R.id.tv_mag_val);
+        mToolbar = (Toolbar)findViewById(R.id.toolbar_magnetic);
+    }
+
+    private void setupToolbar() {
+        mToolbar.setLogo(R.drawable.logo);
+        mToolbar.setTitle(getString(R.string.toolbar_mag_title));
+        setSupportActionBar(mToolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+    }
 
     private void setupCharUI() {
         mDataSets = new ArrayList<BarDataSet>();
@@ -148,11 +156,6 @@ public class MagneticActivity extends ActionBarActivity implements SensorEventLi
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_magnetic,menu);
-        return super.onCreateOptionsMenu(menu);
-    }
 
     private class MyValueFormatter implements ValueFormatter {
 
